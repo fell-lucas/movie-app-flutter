@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_flutter/home/blocs/blocs.dart';
+import 'package:movie_app_flutter/home/widgets/movie_tile.dart';
 import 'package:movie_repository/movie_repository.dart';
 
 class HomePage extends StatelessWidget {
@@ -51,44 +52,7 @@ class HomePage extends StatelessWidget {
                       if (state is MovieSearchLoadSuccessful) {
                         return ListView(
                           children: state.movies
-                              .map((movie) => BlocBuilder<CreateMovieBloc,
-                                      CreateMovieState>(
-                                    builder: (context, state) {
-                                      return ListTile(
-                                        key: Key(movie.imdbId),
-                                        leading: Image.network(movie.image),
-                                        title: Text(movie.title),
-                                        subtitle: Text(movie.description),
-                                        trailing: IconButton(
-                                          icon:
-                                              (state is CreateMovieLoadInProgress &&
-                                                      state.imdbId ==
-                                                          movie.imdbId)
-                                                  ? SizedBox(
-                                                      width: 15,
-                                                      height: 15,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                      ),
-                                                    )
-                                                  : const Icon(Icons.add),
-                                          onPressed: () {
-                                            BlocProvider.of<CreateMovieBloc>(
-                                                    context)
-                                                .add(
-                                              CreateMovie(
-                                                movie: CreateMovieDto(
-                                                  imdbId: movie.imdbId,
-                                                  watched: true,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    },
-                                  ))
+                              .map((movie) => MovieTile(movie: movie))
                               .toList(),
                         );
                       } else if (state is MovieLoadInProgress) {
