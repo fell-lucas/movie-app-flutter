@@ -15,28 +15,26 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.all(15.0),
           child: Column(
             children: [
-              Expanded(
-                flex: 1,
-                child: TextField(
-                  controller: _controller,
-                  onEditingComplete: () {
-                    FocusScope.of(context).unfocus();
-                    if (_controller.text != '') {
-                      BlocProvider.of<MovieBloc>(context)
-                          .add(SearchMovies(fts: _controller.text));
-                    }
-                  },
-                  decoration: InputDecoration(
-                    label: Text('Keywords, ImdbId...'),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    suffixIcon: Icon(Icons.search),
+              TextField(
+                controller: _controller,
+                onEditingComplete: () {
+                  FocusScope.of(context).unfocus();
+                  if (_controller.text != '') {
+                    BlocProvider.of<MovieBloc>(context).add(
+                      SearchMovies(fts: _controller.text),
+                    );
+                  }
+                },
+                decoration: InputDecoration(
+                  label: const Text('Ex.: Chuck Norris'),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
+                  suffixIcon: const Icon(Icons.search),
                 ),
               ),
               const SizedBox(height: 15.0),
               Expanded(
-                flex: 5,
                 child: BlocBuilder<MovieBloc, MovieState>(
                   builder: (context, state) {
                     if (state is MovieSearchLoadSuccessful) {
@@ -50,7 +48,6 @@ class HomePage extends StatelessWidget {
                                     icon: const Icon(Icons.add),
                                     onPressed: () {},
                                   ),
-                                  shape: RoundedRectangleBorder(),
                                 ))
                             .toList(),
                       );

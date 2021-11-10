@@ -8,10 +8,22 @@ abstract class MovieEvent extends Equatable {
 
 class SearchMovies extends MovieEvent {
   final String fts;
+
   SearchMovies({
     required this.fts,
   });
 
   @override
   List<Object?> get props => [fts];
+}
+
+class CreateMovie extends MovieEvent {
+  final CreateMovieDto movie;
+
+  CreateMovie({
+    required this.movie,
+  });
+
+  @override
+  List<Object?> get props => [movie];
 }
