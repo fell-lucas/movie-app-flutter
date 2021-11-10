@@ -11,6 +11,8 @@ environment:
 dependencies:
   equatable: ^2.0.3
   flutter_bloc: ^7.1.0
+  movie_repository:
+    path: "packages/movie_repository"
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
