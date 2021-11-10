@@ -3,6 +3,7 @@ import 'package:movie_repository/src/api/models/models.dart';
 
 abstract class MovieRepository {
   Future<List<Movie>> searchMovies({required String fts});
+  Future<Movie> createMovie({required CreateMovieDto movie});
 }
 
 class Repository extends MovieRepository {
@@ -15,5 +16,10 @@ class Repository extends MovieRepository {
   @override
   Future<List<Movie>> searchMovies({required String fts}) {
     return movieApi.searchMovies(fts: fts);
+  }
+
+  @override
+  Future<Movie> createMovie({required CreateMovieDto movie}) {
+    return movieApi.createMovie(movie: movie);
   }
 }

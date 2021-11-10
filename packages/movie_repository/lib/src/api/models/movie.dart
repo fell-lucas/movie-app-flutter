@@ -9,7 +9,6 @@ class Movie extends Equatable {
   final String title;
   final String description;
   final String image;
-  @JsonKey(ignore: true)
   final bool watched;
 
   const Movie({
