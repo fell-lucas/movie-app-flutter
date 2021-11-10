@@ -9,6 +9,7 @@ class Movie extends Equatable {
   final String title;
   final String description;
   final String image;
+  @JsonKey(ignore: true)
   final bool watched;
 
   const Movie({
@@ -16,7 +17,7 @@ class Movie extends Equatable {
     required this.title,
     required this.description,
     required this.image,
-    required this.watched,
+    this.watched = false,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
