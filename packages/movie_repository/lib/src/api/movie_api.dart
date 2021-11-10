@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'models/models.dart';
 
-const String kApiUrl = 'http://192.168.1.7:5000';
+const String kApiUrl = 'https://192.168.1.7:5001';
 
 class MovieApi {
   final http.Client _client;
@@ -27,12 +27,17 @@ class MovieApi {
   }
 
   Future<Movie> createMovie({required CreateMovieDto movie}) async {
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
     final result = await _client.post(
       Uri.parse('$kApiUrl/movies'),
-      body: movie.toJson(),
+      headers: headers,
+      body: jsonEncode({"imdbId": movie.imdbId, "watched": movie.watched}),
     );
 
-    if (result.statusCode != 200) {
+    if (result.statusCode != 201) {
       throw const HttpException('Erro ao conectar com a API.');
     }
 

@@ -20,8 +20,6 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     yield MovieLoadInProgress();
     if (event is SearchMovies) {
       yield* _mapSearchMoviesToState(event);
-    } else if (event is CreateMovie) {
-      yield* _mapCreateMovieToState(event);
     }
   }
 
@@ -29,15 +27,6 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     try {
       List<Movie> movies = await movieRepository.searchMovies(fts: event.fts);
       yield MovieSearchLoadSuccessful(movies: movies);
-    } on HttpException catch (e) {
-      yield MovieError(error: e.message);
-    }
-  }
-
-  Stream<MovieState> _mapCreateMovieToState(CreateMovie event) async* {
-    try {
-      Movie movie = await movieRepository.createMovie(movie: event.movie);
-      yield MovieCreateLoadSuccessful(movie: movie);
     } on HttpException catch (e) {
       yield MovieError(error: e.message);
     }

@@ -16,14 +16,3 @@ class SearchMovies extends MovieEvent {
   @override
   List<Object?> get props => [fts];
 }
-
-class CreateMovie extends MovieEvent {
-  final CreateMovieDto movie;
-
-  CreateMovie({
-    required this.movie,
-  });
-
-  @override
-  List<Object?> get props => [movie];
-}

@@ -35,10 +35,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: BlocProvider<MovieBloc>(
-        create: (context) => MovieBloc(
-          movieRepository: getIt<MovieRepository>(),
-        ),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<MovieBloc>(
+            create: (context) => MovieBloc(
+              movieRepository: getIt<MovieRepository>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => CreateMovieBloc(
+              movieRepository: getIt<MovieRepository>(),
+            ),
+          ),
+        ],
         child: HomePage(),
       ),
     );

@@ -21,17 +21,6 @@ class MovieSearchLoadSuccessful extends MovieState {
   List<Object?> get props => [movies];
 }
 
-class MovieCreateLoadSuccessful extends MovieState {
-  final Movie movie;
-
-  MovieCreateLoadSuccessful({
-    required this.movie,
-  });
-
-  @override
-  List<Object?> get props => [movie];
-}
-
 class MovieError extends MovieState {
   final String error;
 
