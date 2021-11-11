@@ -20,7 +20,7 @@ class SearchPage extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (context) => MovieBloc(
+          create: (context) => SearchMovieBloc(
             movieRepository: getIt<MovieRepository>(),
           ),
         ),

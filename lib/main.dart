@@ -7,6 +7,7 @@ import 'package:movie_app_flutter/home/home.dart';
 import 'package:movie_repository/movie_repository.dart';
 
 import 'home/blocs/blocs.dart';
+import 'my_movies/blocs/blocs.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -39,8 +40,17 @@ class MyApp extends StatelessWidget {
           contentTextStyle: TextStyle(color: Colors.white),
         ),
       ),
-      home: BlocProvider(
-        create: (context) => BottomNavigationCubit(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => BottomNavigationCubit(),
+          ),
+          BlocProvider(
+            create: (context) => GetMoviesBloc(
+              movieRepository: getIt<MovieRepository>(),
+            ),
+          ),
+        ],
         child: HomePage(),
       ),
     );

@@ -44,4 +44,16 @@ class MovieApi {
 
     return Movie.fromJson(jsonDecode(result.body));
   }
+
+  Future<List<Movie>> getMovies() async {
+    final result = await _client.get(Uri.parse('$kApiUrl/movies'));
+
+    if (result.statusCode != 200) {
+      throw const HttpException('Erro ao conectar com a API.');
+    }
+
+    List<dynamic> moviesDynamic = jsonDecode(result.body);
+    final movies = moviesDynamic.map((movie) => Movie.fromJson(movie)).toList();
+    return movies;
+  }
 }
