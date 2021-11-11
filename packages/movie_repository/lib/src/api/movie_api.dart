@@ -36,8 +36,9 @@ class MovieApi {
       headers: headers,
       body: jsonEncode({"imdbId": movie.imdbId, "watched": movie.watched}),
     );
-
-    if (result.statusCode != 201) {
+    if (result.statusCode == 409) {
+      throw const HttpException('Filme já adicionado.');
+    } else if (result.statusCode != 201) {
       throw const HttpException('Erro ao conectar com a API.');
     }
 

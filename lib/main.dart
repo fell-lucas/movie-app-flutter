@@ -34,20 +34,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<MovieBloc>(
-            create: (context) => MovieBloc(
-              movieRepository: getIt<MovieRepository>(),
-            ),
-          ),
-          BlocProvider(
-            create: (context) => CreateMovieBloc(
-              movieRepository: getIt<MovieRepository>(),
-            ),
-          ),
-        ],
+      theme: ThemeData.dark().copyWith(
+        snackBarTheme: const SnackBarThemeData(
+          contentTextStyle: TextStyle(color: Colors.white),
+        ),
+      ),
+      home: BlocProvider(
+        create: (context) => BottomNavigationCubit(),
         child: HomePage(),
       ),
     );

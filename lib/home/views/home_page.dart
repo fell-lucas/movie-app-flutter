@@ -1,91 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_flutter/home/blocs/blocs.dart';
-import 'package:movie_app_flutter/home/widgets/movie_tile.dart';
-import 'package:movie_repository/movie_repository.dart';
+import 'package:movie_app_flutter/my_movies/views/my_movies.dart';
+import 'package:movie_app_flutter/search/views/views.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-
-  final TextEditingController _controller = TextEditingController();
+  final _screens = [const SearchPage(), const MyMoviesPage()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<CreateMovieBloc, CreateMovieState>(
-        listener: (context, state) {
-          if (state is CreateMovieLoadSuccessful) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('${state.movie.title} inserido com sucesso!'),
-              ),
-            );
-          }
-        },
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _controller,
-                  onEditingComplete: () {
-                    FocusScope.of(context).unfocus();
-                    if (_controller.text != '') {
-                      BlocProvider.of<MovieBloc>(context).add(
-                        SearchMovies(fts: _controller.text),
-                      );
-                    }
-                  },
-                  decoration: InputDecoration(
-                    label: const Text('Ex.: Chuck Norris'),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    suffixIcon: const Icon(Icons.search),
-                  ),
-                ),
-                const SizedBox(height: 15.0),
-                Expanded(
-                  child: BlocBuilder<MovieBloc, MovieState>(
-                    builder: (context, state) {
-                      if (state is MovieSearchLoadSuccessful) {
-                        return ListView(
-                          children: state.movies
-                              .map((movie) => MovieTile(movie: movie))
-                              .toList(),
-                        );
-                      } else if (state is MovieLoadInProgress) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (state is MovieError) {
-                        return Center(
-                          child: Text(
-                            state.error,
-                            style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 24.0,
-                            ),
-                          ),
-                        );
-                      } else {
-                        return const Center(
-                          child: Text(
-                            'Search the movies you always wanted to watch and add them to your watchlist',
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: _screens[context.read<BottomNavigationCubit>().state],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: context.select(
+          (BottomNavigationCubit cubit) => cubit.state,
+        ),
+        onTap: (index) {
+          context.read<BottomNavigationCubit>().emit(index);
+        },
         items: const [
           BottomNavigationBarItem(
             label: 'Home',

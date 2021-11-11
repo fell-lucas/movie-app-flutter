@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_repository/movie_repository.dart';
 
-import 'package:movie_app_flutter/home/blocs/blocs.dart';
+import 'package:movie_app_flutter/search/blocs/blocs.dart';
 
 class MovieTile extends StatelessWidget {
   final Movie movie;
