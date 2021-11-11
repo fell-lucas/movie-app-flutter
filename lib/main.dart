@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
             create: (context) => BottomNavigationCubit(),
           ),
           BlocProvider(
-            create: (context) => GetMoviesBloc(
+            create: (context) => MyListBloc(
               movieRepository: getIt<MovieRepository>(),
             ),
           ),

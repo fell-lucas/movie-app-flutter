@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app_flutter/my_movies/blocs/blocs.dart';
 import 'package:movie_repository/movie_repository.dart';
 
 class MovieCard extends StatelessWidget {
@@ -18,12 +20,21 @@ class MovieCard extends StatelessWidget {
                 BlendMode.multiply,
               )
             : null,
-        image: NetworkImage(
-          movie.image,
-        ),
+        image: NetworkImage(movie.image),
         fit: BoxFit.fill,
         child: InkWell(
           onTap: () {},
+          onLongPress: () {
+            BlocProvider.of<MyListBloc>(context).add(
+              MyListUpdateOne(
+                movie: UpdateMovieDto(
+                  imdbId: movie.imdbId,
+                  watched: !movie.watched,
+                ),
+              ),
+            );
+            BlocProvider.of<MyListBloc>(context).add(MyListGetAll());
+          },
           child: Container(
             alignment: Alignment.bottomLeft,
             child: ClipRRect(

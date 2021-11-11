@@ -5,6 +5,7 @@ abstract class MovieRepository {
   Future<List<Movie>> searchMovies({required String fts});
   Future<List<Movie>> getMovies();
   Future<Movie> createMovie({required CreateMovieDto movie});
+  Future<void> updateMovie({required UpdateMovieDto movie});
 }
 
 class Repository extends MovieRepository {
@@ -27,5 +28,10 @@ class Repository extends MovieRepository {
   @override
   Future<Movie> createMovie({required CreateMovieDto movie}) {
     return movieApi.createMovie(movie: movie);
+  }
+
+  @override
+  Future<void> updateMovie({required UpdateMovieDto movie}) {
+    return movieApi.updateMovie(movie: movie);
   }
 }

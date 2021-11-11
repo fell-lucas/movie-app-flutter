@@ -56,4 +56,21 @@ class MovieApi {
     final movies = moviesDynamic.map((movie) => Movie.fromJson(movie)).toList();
     return movies;
   }
+
+  Future<void> updateMovie({required UpdateMovieDto movie}) async {
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    final result = await _client.put(
+      Uri.parse('$kApiUrl/movies/${movie.imdbId}'),
+      headers: headers,
+      body: jsonEncode({"watched": movie.watched}),
+    );
+
+    if (result.statusCode != 204) {
+      throw const HttpException('Erro ao conectar com a API.');
+    }
+  }
 }
