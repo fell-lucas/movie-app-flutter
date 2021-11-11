@@ -1,12 +1,12 @@
-part of 'movie_bloc.dart';
+part of 'search_movie_bloc.dart';
 
 @immutable
-abstract class MovieEvent extends Equatable {
+abstract class SearchMovieEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class SearchMovies extends MovieEvent {
+class SearchMovies extends SearchMovieEvent {
   final String fts;
 
   SearchMovies({

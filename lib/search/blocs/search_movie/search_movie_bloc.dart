@@ -5,30 +5,30 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:movie_repository/movie_repository.dart';
 
-part 'movie_event.dart';
-part 'movie_state.dart';
+part 'search_movie_event.dart';
+part 'search_movie_state.dart';
 
-class MovieBloc extends Bloc<MovieEvent, MovieState> {
+class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMovieState> {
   final MovieRepository movieRepository;
 
-  MovieBloc({
+  SearchMovieBloc({
     required this.movieRepository,
-  }) : super(MovieInitial());
+  }) : super(SearchMovieInitial());
 
   @override
-  Stream<MovieState> mapEventToState(MovieEvent event) async* {
-    yield MovieLoadInProgress();
+  Stream<SearchMovieState> mapEventToState(SearchMovieEvent event) async* {
+    yield SearchMovieLoadInProgress();
     if (event is SearchMovies) {
       yield* _mapSearchMoviesToState(event);
     }
   }
 
-  Stream<MovieState> _mapSearchMoviesToState(SearchMovies event) async* {
+  Stream<SearchMovieState> _mapSearchMoviesToState(SearchMovies event) async* {
     try {
       List<Movie> movies = await movieRepository.searchMovies(fts: event.fts);
-      yield MovieSearchLoadSuccessful(movies: movies);
+      yield SearchMovieLoadSuccessful(movies: movies);
     } on HttpException catch (e) {
-      yield MovieError(error: e.message);
+      yield SearchMovieError(error: e.message);
     }
   }
 }

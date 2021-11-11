@@ -11,18 +11,18 @@ class MovieList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: BlocBuilder<MovieBloc, MovieState>(
+      child: BlocBuilder<SearchMovieBloc, SearchMovieState>(
         builder: (context, state) {
-          if (state is MovieSearchLoadSuccessful) {
+          if (state is SearchMovieLoadSuccessful) {
             return ListView(
               children:
                   state.movies.map((movie) => MovieTile(movie: movie)).toList(),
             );
-          } else if (state is MovieLoadInProgress) {
+          } else if (state is SearchMovieLoadInProgress) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is MovieError) {
+          } else if (state is SearchMovieError) {
             return Center(
               child: Text(
                 state.error,

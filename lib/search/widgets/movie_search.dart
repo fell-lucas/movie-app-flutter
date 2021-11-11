@@ -14,7 +14,7 @@ class MovieSearch extends StatelessWidget {
       onEditingComplete: () {
         FocusScope.of(context).unfocus();
         if (_controller.text != '') {
-          BlocProvider.of<MovieBloc>(context).add(
+          BlocProvider.of<SearchMovieBloc>(context).add(
             SearchMovies(fts: _controller.text),
           );
         }
