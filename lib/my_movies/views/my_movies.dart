@@ -21,8 +21,8 @@ class _MyMoviesPageState extends State<MyMoviesPage> {
   Widget build(BuildContext context) {
     return BlocListener<MyListBloc, MyListState>(
       listener: (context, state) {
-        ScaffoldMessenger.of(context).clearSnackBars();
         if (state is MyListUpdateOneLoadSuccessful) {
+          ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               backgroundColor: Colors.green,
@@ -30,6 +30,7 @@ class _MyMoviesPageState extends State<MyMoviesPage> {
             ),
           );
         } else if (state is MyListUpdateOneError) {
+          ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.red,
@@ -40,31 +41,14 @@ class _MyMoviesPageState extends State<MyMoviesPage> {
       },
       child: BlocBuilder<MyListBloc, MyListState>(
         builder: (context, state) {
-          if (state is MyListGetAllLoadInProgress) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is MyListGetAllLoadSuccessful) {
+          if (state is MyListGetAllLoadSuccessful) {
             return GridView.count(
               crossAxisCount: 2,
               children:
                   state.movies.map((movie) => MovieCard(movie: movie)).toList(),
             );
           } else {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Clique abaixo para tentar carregar os filmes manualmente.',
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<MyListBloc>(context).add(MyListGetAll());
-                  },
-                  child: const Text('Carregar'),
-                )
-              ],
-            );
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
