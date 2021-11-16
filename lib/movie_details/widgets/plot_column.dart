@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app_flutter/movie_details/widgets/widgets.dart';
 
 class PlotColumn extends StatelessWidget {
   final String plot;
@@ -10,13 +11,7 @@ class PlotColumn extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(10),
-          child: Text(
-            'Plot',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-          ),
-        ),
+        const SectionTitle(title: 'Plot'),
         Card(
           elevation: 15,
           child: Padding(
@@ -24,7 +19,6 @@ class PlotColumn extends StatelessWidget {
             child: Text(
               plot,
               textAlign: TextAlign.center,
-              style: const TextStyle(),
             ),
           ),
         )

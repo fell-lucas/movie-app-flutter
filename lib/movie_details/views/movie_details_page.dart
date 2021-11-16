@@ -40,7 +40,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     child: Column(
                       children: [
                         PlotColumn(plot: state.movie.plot),
-                        CastList(castList: state.movie.actorList)
+                        CastList(castList: state.movie.actorList),
+                        DirectorList(directorList: state.movie.directorList)
                       ],
                     ),
                   );

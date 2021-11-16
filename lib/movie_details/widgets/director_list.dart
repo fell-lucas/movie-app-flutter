@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:movie_app_flutter/movie_details/widgets/widgets.dart';
 import 'package:movie_repository/movie_repository.dart';
 
-class CastList extends StatelessWidget {
-  final List<Actor> castList;
-  const CastList({
+class DirectorList extends StatelessWidget {
+  final List<Director> directorList;
+  const DirectorList({
     Key? key,
-    required this.castList,
+    required this.directorList,
   }) : super(key: key);
 
   @override
@@ -14,13 +14,12 @@ class CastList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionTitle(title: 'Cast'),
-        ...castList
+        SectionTitle(title: 'Director${directorList.length > 1 ? "s" : ""}'),
+        ...directorList
             .map(
-              (actor) => PeopleTile(
-                img: actor.image,
-                title: actor.name,
-                subtitle: 'As ${actor.asCharacter.split("as ")[0]}',
+              (director) => ListTile(
+                leading: const Icon(Icons.movie_creation),
+                title: Text(director.name),
               ),
             )
             .toList(),
