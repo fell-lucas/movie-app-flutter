@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:movie_repository/src/api/models/detailed_movie_dto.dart';
 
 import 'models/models.dart';
 
-const String kApiUrl = 'https://192.168.1.7:5001';
+const String kApiUrl = 'https://192.168.1.10:5001';
 
 class MovieApi {
   final http.Client _client;
@@ -72,5 +73,17 @@ class MovieApi {
     if (result.statusCode != 204) {
       throw const HttpException('Erro ao conectar com a API.');
     }
+  }
+
+  Future<DetailedMovieDto> getDetailedMovie({required String imdbId}) async {
+    final result =
+        await _client.get(Uri.parse('$kApiUrl/movies/detailed/$imdbId'));
+
+    if (result.statusCode != 200) {
+      throw const HttpException('Erro ao conectar com a API.');
+    }
+
+    DetailedMovieDto movie = DetailedMovieDto.fromJson(jsonDecode(result.body));
+    return movie;
   }
 }

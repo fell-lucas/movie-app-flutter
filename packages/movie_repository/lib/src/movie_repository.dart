@@ -1,4 +1,5 @@
 import 'package:movie_repository/src/api/api.dart';
+import 'package:movie_repository/src/api/models/detailed_movie_dto.dart';
 import 'package:movie_repository/src/api/models/models.dart';
 
 abstract class MovieRepository {
@@ -6,6 +7,7 @@ abstract class MovieRepository {
   Future<List<Movie>> getMovies();
   Future<Movie> createMovie({required CreateMovieDto movie});
   Future<void> updateMovie({required UpdateMovieDto movie});
+  Future<DetailedMovieDto> getDetailedMovie({required String imdbId});
 }
 
 class Repository extends MovieRepository {
@@ -33,5 +35,10 @@ class Repository extends MovieRepository {
   @override
   Future<void> updateMovie({required UpdateMovieDto movie}) {
     return movieApi.updateMovie(movie: movie);
+  }
+
+  @override
+  Future<DetailedMovieDto> getDetailedMovie({required String imdbId}) {
+    return movieApi.getDetailedMovie(imdbId: imdbId);
   }
 }
