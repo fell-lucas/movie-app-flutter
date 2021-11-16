@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app_flutter/main.dart';
+import 'package:movie_app_flutter/movie_details/bloc/detailed_movie/detailed_movie_bloc.dart';
 import 'package:movie_app_flutter/movie_details/views/views.dart';
 import 'package:movie_app_flutter/my_movies/blocs/blocs.dart';
 import 'package:movie_repository/movie_repository.dart';
@@ -30,8 +32,13 @@ class MovieCard extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MovieDetailsPage(
-                    movie: movie,
+                  builder: (context) => BlocProvider(
+                    create: (context) => DetailedMovieBloc(
+                      movieRepository: getIt<MovieRepository>(),
+                    ),
+                    child: MovieDetailsPage(
+                      movie: movie,
+                    ),
                   ),
                 ),
               );
