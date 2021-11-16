@@ -53,6 +53,5 @@ class _MyMoviesPageState extends State<MyMoviesPage> {
         },
       ),
     );
-    ;
   }
 }

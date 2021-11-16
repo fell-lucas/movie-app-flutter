@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_flutter/home/blocs/blocs.dart';
-import 'package:movie_app_flutter/my_movies/views/my_movies.dart';
+import 'package:movie_app_flutter/my_movies/views/my_movies_page.dart';
 import 'package:movie_app_flutter/search/views/views.dart';
 
 class HomePage extends StatelessWidget {
