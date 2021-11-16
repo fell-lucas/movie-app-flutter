@@ -43,7 +43,7 @@ class _MyMoviesPageState extends State<MyMoviesPage> {
         builder: (context, state) {
           if (state is MyListGetAllLoadSuccessful) {
             return GridView.count(
-              crossAxisCount: 2,
+              crossAxisCount: 3,
               children:
                   state.movies.map((movie) => MovieCard(movie: movie)).toList(),
             );
