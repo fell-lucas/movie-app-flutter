@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_repository/movie_repository.dart';
+
 import 'package:movie_app_flutter/movie_details/bloc/blocs.dart';
 import 'package:movie_app_flutter/movie_details/widgets/widgets.dart';
-import 'package:movie_repository/movie_repository.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   final Movie movie;
@@ -41,7 +42,45 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       children: [
                         PlotColumn(plot: state.movie.plot),
                         CastList(castList: state.movie.actorList),
-                        DirectorList(directorList: state.movie.directorList)
+                        DirectorList(directorList: state.movie.directorList),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SectionTitle(title: 'Genres'),
+                            ListTile(
+                              leading: const Icon(
+                                Icons.theater_comedy_rounded,
+                                color: Colors.grey,
+                              ),
+                              title: Text(state.movie.genres),
+                            ),
+                            const SectionTitle(title: 'Languages'),
+                            ListTile(
+                              leading: const Icon(
+                                Icons.language,
+                                color: Colors.grey,
+                              ),
+                              title: Text(state.movie.languages),
+                            ),
+                            const SectionTitle(title: 'Ratings'),
+                            Rating(
+                              max: 10,
+                              logo: 'assets/images/imdb-logo.png',
+                              actual: double.parse(state.movie.imDbRating),
+                              helperText: 'IMDb',
+                            ),
+                            Rating(
+                              max: 100,
+                              logo: 'assets/images/metacritic-logo.png',
+                              actual: double.parse(
+                                state.movie.metacriticRating,
+                              ),
+                              helperText: 'Metacritic',
+                            ),
+                            const SectionTitle(title: 'Keyword List'),
+                          ],
+                        ),
+                        KeywordList(keywordList: state.movie.keywordList)
                       ],
                     ),
                   );

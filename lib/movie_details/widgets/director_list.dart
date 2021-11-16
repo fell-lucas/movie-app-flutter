@@ -18,7 +18,7 @@ class DirectorList extends StatelessWidget {
         ...directorList
             .map(
               (director) => ListTile(
-                leading: const Icon(Icons.movie_creation),
+                leading: const Icon(Icons.movie_creation, color: Colors.grey),
                 title: Text(director.name),
               ),
             )
