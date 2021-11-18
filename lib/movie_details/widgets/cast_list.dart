@@ -11,20 +11,24 @@ class CastList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SectionTitle(title: 'Cast'),
-        ...castList
-            .map(
-              (actor) => PeopleTile(
-                img: actor.image,
-                title: actor.name,
-                subtitle: 'As ${actor.asCharacter.split("as ")[0]}',
-              ),
-            )
-            .toList(),
-      ],
+    return SizedBox(
+      height: 200,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ...castList
+                .map(
+                  (actor) => PeopleTile(
+                    img: actor.image,
+                    title: actor.name,
+                    subtitle: 'As ${actor.asCharacter.split("as ")[0]}',
+                  ),
+                )
+                .toList(),
+          ],
+        ),
+      ),
     );
   }
 }

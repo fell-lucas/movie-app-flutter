@@ -39,7 +39,7 @@ class Rating extends StatelessWidget {
 
     return ListTile(
       leading: SizedBox(
-        width: 75,
+        width: 50,
         child: Image.asset(logo),
       ),
       title: text,

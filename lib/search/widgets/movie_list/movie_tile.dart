@@ -37,7 +37,7 @@ class MovieTile extends StatelessWidget {
                 CreateMovie(
                   movie: CreateMovieDto(
                     imdbId: movie.imdbId,
-                    watched: true,
+                    watched: false,
                   ),
                 ),
               );

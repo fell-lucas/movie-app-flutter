@@ -38,19 +38,19 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 BlocBuilder<DetailedMovieBloc, DetailedMovieState>(
                   builder: (context, state) {
                     if (state is DetailedMovieLoadSuccessful) {
-                      print(state.movie.imDbRating);
-                      print(state.movie.metacriticRating);
                       return Padding(
                         padding: const EdgeInsets.all(10),
                         child: Column(
                           children: [
-                            PlotColumn(plot: state.movie.plot),
-                            CastList(castList: state.movie.actorList),
-                            DirectorList(
-                                directorList: state.movie.directorList),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                PlotColumn(plot: state.movie.plot),
+                                const SectionTitle(title: 'Cast'),
+                                CastList(castList: state.movie.actorList),
+                                DirectorList(
+                                  directorList: state.movie.directorList,
+                                ),
                                 const SectionTitle(title: 'Genres'),
                                 ListTile(
                                   leading: const Icon(
@@ -122,6 +122,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             ),
           ),
           Container(
+            width: double.maxFinite,
+            height: 75,
+            alignment: Alignment.topLeft,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [Colors.transparent, Colors.black.withOpacity(0.9)],

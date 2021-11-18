@@ -30,6 +30,8 @@ class MyListBloc extends Bloc<MyListEvent, MyListState> {
       yield MyListGetAllLoadSuccessful(movies: movies);
     } on HttpException catch (e) {
       yield MyListGetAllError(error: e.message);
+    } catch (e) {
+      yield const MyListGetAllError(error: 'Algo deu errado.');
     }
   }
 
@@ -40,6 +42,8 @@ class MyListBloc extends Bloc<MyListEvent, MyListState> {
       yield MyListUpdateOneLoadSuccessful();
     } on HttpException catch (e) {
       yield MyListUpdateOneError(error: e.message);
+    } catch (e) {
+      yield const MyListGetAllError(error: 'Algo deu errado.');
     }
   }
 }
