@@ -6,7 +6,7 @@ import 'package:movie_repository/src/api/models/detailed_movie_dto.dart';
 
 import 'models/models.dart';
 
-const String kApiUrl = 'https://192.168.1.10:5001';
+const String kApiUrl = 'https://192.168.1.5:5001';
 
 class MovieApi {
   final http.Client _client;

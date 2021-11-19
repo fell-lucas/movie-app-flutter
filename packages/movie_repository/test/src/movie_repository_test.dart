@@ -1,16 +1,13 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:movie_repository/movie_repository.dart';
+import 'shared/functions.dart';
 
 class MockMovieApi extends Mock implements MovieApi {}
 
 void main() {
   late MovieApi api;
   late MovieRepository repository;
-  var rand = Random();
 
   setUp(() {
     api = MockMovieApi();
@@ -20,38 +17,6 @@ void main() {
   setUpAll(() {
     registerFallbackValue(const UpdateMovieDto(imdbId: 'a', watched: false));
   });
-
-  Movie generateMovie() {
-    var str = rand.nextInt(1000).toString();
-    return Movie(
-      description: str,
-      image: str,
-      imdbId: str,
-      title: str,
-      watched: rand.nextBool(),
-    );
-  }
-
-  DetailedMovieDto generateDetailedMovie() {
-    var str = rand.nextInt(1000).toString();
-    return DetailedMovieDto(
-      year: str,
-      actorList: [Actor(id: str, name: str, image: str, asCharacter: str)],
-      awards: str,
-      directorList: [Director(id: str, name: str)],
-      genres: str,
-      id: str,
-      imDbRating: str,
-      keywordList: [str, str, str],
-      languages: str,
-      metacriticRating: str,
-      plot: str,
-      releaseDate: str,
-      runtimeStr: str,
-      image: str,
-      title: str,
-    );
-  }
 
   test('searchMovies', () async {
     var movieList = List.generate(10, (i) {
