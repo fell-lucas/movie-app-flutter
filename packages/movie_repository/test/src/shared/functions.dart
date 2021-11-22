@@ -11,6 +11,15 @@ CreateMovieDto generateCreateMovie() {
   );
 }
 
+UpdateMovieDto generateUpdateMovie() {
+  final rand = Random();
+  var str = rand.nextInt(1000).toString();
+  return UpdateMovieDto(
+    imdbId: str,
+    watched: rand.nextBool(),
+  );
+}
+
 Movie generateMovie() {
   final rand = Random();
   var str = rand.nextInt(1000).toString();

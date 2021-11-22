@@ -90,4 +90,71 @@ void main() {
       );
     });
   });
+
+  group('getMovies', () {
+    setUpAll(() {
+      mockedResponses = {
+        'success': http.Response(
+          jsonEncode([
+            generateMovie(),
+            generateMovie(),
+            generateMovie(),
+          ]),
+          200,
+        ),
+        'empty': http.Response('[]', 200),
+        'error': http.Response('', 404)
+      };
+    });
+    test('success', () async {
+      when(() => mockedClient.get(any()))
+          .thenAnswer((_) async => mockedResponses['success']!);
+      var movies = await api.getMovies();
+      expect(jsonEncode(movies), mockedResponses['success']!.body);
+    });
+    test('error', () {
+      when(() => mockedClient.get(any()))
+          .thenAnswer((_) async => mockedResponses['error']!);
+      expect(() async => await api.getMovies(), throwsA(isA<HttpException>()));
+    });
+    test('empty', () async {
+      when(() => mockedClient.get(any()))
+          .thenAnswer((_) async => mockedResponses['empty']!);
+      var movies = await api.getMovies();
+      expect(movies, []);
+    });
+  });
+
+  group('updateMovie', () {
+    setUpAll(() {
+      mockedResponses = {
+        'success': http.Response('', 204),
+        'error': http.Response('', 404)
+      };
+    });
+    test('success', () {
+      when(() => mockedClient.put(
+            any(),
+            headers: any(named: 'headers'),
+            body: any(named: 'body'),
+          )).thenAnswer((_) async => mockedResponses['success']!);
+      expect(
+        () async => await api.updateMovie(movie: generateUpdateMovie()),
+        isA<void>(),
+      );
+    });
+    test('error', () async {
+      when(() => mockedClient.put(
+            any(),
+            headers: any(named: 'headers'),
+            body: any(named: 'body'),
+          )).thenAnswer((_) async => mockedResponses['error']!);
+      expect(
+        () async => await api.updateMovie(movie: generateUpdateMovie()),
+        throwsA(
+          isA<HttpException>(),
+        ),
+      );
+    });
+  });
 }
