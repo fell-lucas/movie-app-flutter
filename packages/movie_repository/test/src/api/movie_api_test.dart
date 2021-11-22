@@ -21,7 +21,7 @@ void main() {
   });
 
   group('searchMovies', () {
-    setUp(() {
+    setUpAll(() {
       mockedResponses = {
         'success': http.Response(
           jsonEncode([
@@ -41,7 +41,7 @@ void main() {
       var movies = await api.searchMovies(fts: '');
       expect(jsonEncode(movies), mockedResponses['success']!.body);
     });
-    test('error', () async {
+    test('error', () {
       when(() => mockedClient.get(any()))
           .thenAnswer((_) async => mockedResponses['error']!);
       expect(() => api.searchMovies(fts: ''), throwsA(isA<HttpException>()));
@@ -51,6 +51,43 @@ void main() {
           .thenAnswer((_) async => mockedResponses['empty']!);
       var movies = await api.searchMovies(fts: '');
       expect(movies, []);
+    });
+  });
+  group('createMovie', () {
+    setUpAll(() {
+      mockedResponses = {
+        'success': http.Response(jsonEncode(generateMovie()), 201),
+        'error': http.Response('', 409)
+      };
+    });
+    test('success', () async {
+      when(() => mockedClient.post(
+            any(),
+            headers: any(named: 'headers'),
+            body: any(named: 'body'),
+          )).thenAnswer((_) async => mockedResponses['success']!);
+      var movieToCreate = Movie.fromJson(
+        jsonDecode(mockedResponses['success']!.body),
+      );
+      var createdMovie = await api.createMovie(
+          movie: CreateMovieDto(
+        imdbId: movieToCreate.imdbId,
+        watched: movieToCreate.watched,
+      ));
+      expect(movieToCreate.imdbId, createdMovie.imdbId);
+    });
+    test('error', () async {
+      when(() => mockedClient.post(
+            any(),
+            headers: any(named: 'headers'),
+            body: any(named: 'body'),
+          )).thenAnswer((_) async => mockedResponses['error']!);
+      expect(
+        () => api.createMovie(movie: generateCreateMovie()),
+        throwsA(
+          isA<HttpException>(),
+        ),
+      );
     });
   });
 }

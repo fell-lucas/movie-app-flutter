@@ -35,7 +35,7 @@ class MovieApi {
     final result = await _client.post(
       Uri.parse('$kApiUrl/movies'),
       headers: headers,
-      body: jsonEncode({"imdbId": movie.imdbId, "watched": movie.watched}),
+      body: jsonEncode(movie),
     );
     if (result.statusCode == 409) {
       throw const HttpException('Filme já adicionado.');
