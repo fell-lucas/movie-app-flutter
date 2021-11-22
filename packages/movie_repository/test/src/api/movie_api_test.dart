@@ -157,4 +157,34 @@ void main() {
       );
     });
   });
+
+  group('getDetailedMovie', () {
+    setUpAll(() {
+      mockedResponses = {
+        'success': http.Response(
+          jsonEncode(generateDetailedMovie()),
+          200,
+        ),
+        'error': http.Response('', 404)
+      };
+    });
+    test('success', () async {
+      when(() => mockedClient.get(any()))
+          .thenAnswer((_) async => mockedResponses['success']!);
+      var movieToGet = DetailedMovieDto.fromJson(
+        jsonDecode(mockedResponses['success']!.body),
+      );
+      var detailedMovie = await api.getDetailedMovie(imdbId: movieToGet.id);
+      expect(detailedMovie, movieToGet);
+    });
+    test('error', () {
+      when(() => mockedClient.get(any()))
+          .thenAnswer((_) async => mockedResponses['error']!);
+      var movieToGet = generateDetailedMovie();
+      expect(
+        () async => await api.getDetailedMovie(imdbId: movieToGet.id),
+        throwsA(isA<HttpException>()),
+      );
+    });
+  });
 }
