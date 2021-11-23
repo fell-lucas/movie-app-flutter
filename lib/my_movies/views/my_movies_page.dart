@@ -42,11 +42,18 @@ class _MyMoviesPageState extends State<MyMoviesPage> {
       child: BlocBuilder<MyListBloc, MyListState>(
         builder: (context, state) {
           if (state is MyListGetAllLoadSuccessful) {
-            return GridView.count(
-              crossAxisCount: 3,
-              children:
-                  state.movies.map((movie) => MovieCard(movie: movie)).toList(),
-            );
+            if (state.movies.isNotEmpty) {
+              return GridView.count(
+                crossAxisCount: 3,
+                children: state.movies
+                    .map((movie) => MovieCard(movie: movie))
+                    .toList(),
+              );
+            } else {
+              return const Center(
+                child: Text('Add a few movies to begin!'),
+              );
+            }
           } else {
             return const Center(child: CircularProgressIndicator());
           }
