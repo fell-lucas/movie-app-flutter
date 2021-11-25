@@ -1,29 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app_flutter/main.dart';
 import 'package:movie_app_flutter/search/blocs/blocs.dart';
 import 'package:movie_app_flutter/search/widgets/widgets.dart';
-import 'package:movie_repository/movie_repository.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({
     Key? key,
+    required this.createMovieBloc,
+    required this.searchMovieBloc,
   }) : super(key: key);
+
+  final CreateMovieBloc createMovieBloc;
+  final SearchMovieBloc searchMovieBloc;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => CreateMovieBloc(
-            movieRepository: getIt<MovieRepository>(),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => SearchMovieBloc(
-            movieRepository: getIt<MovieRepository>(),
-          ),
-        ),
+        BlocProvider<CreateMovieBloc>(create: (context) => createMovieBloc),
+        BlocProvider<SearchMovieBloc>(create: (context) => searchMovieBloc),
       ],
       child: BlocListener<CreateMovieBloc, CreateMovieState>(
         listener: (context, state) {
@@ -32,7 +27,10 @@ class SearchPage extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: Colors.green,
-                content: Text('${state.movie.title} salvo na watchlist!'),
+                content: Text(
+                  '${state.movie.title} added to watchlist!',
+                  key: const Key('snackbar_success'),
+                ),
               ),
             );
           } else if (state is CreateMovieError) {

@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_flutter/home/blocs/blocs.dart';
+import 'package:movie_app_flutter/main.dart';
 import 'package:movie_app_flutter/my_movies/views/my_movies_page.dart';
+import 'package:movie_app_flutter/search/blocs/blocs.dart';
 import 'package:movie_app_flutter/search/views/views.dart';
+import 'package:movie_repository/movie_repository.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-  final _screens = [const SearchPage(), const MyMoviesPage()];
+  final _screens = [
+    SearchPage(
+      createMovieBloc: CreateMovieBloc(
+        movieRepository: getIt<MovieRepository>(),
+      ),
+      searchMovieBloc: SearchMovieBloc(
+        movieRepository: getIt<MovieRepository>(),
+      ),
+    ),
+    const MyMoviesPage()
+  ];
 
   @override
   Widget build(BuildContext context) {

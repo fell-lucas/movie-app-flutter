@@ -20,12 +20,15 @@ class MovieList extends StatelessWidget {
             );
           } else if (state is SearchMovieLoadInProgress) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                key: Key('search_load_indicator'),
+              ),
             );
           } else if (state is SearchMovieError) {
             return Center(
               child: Text(
                 state.error,
+                key: const Key('search_error'),
                 style: const TextStyle(
                   color: Colors.red,
                   fontSize: 24.0,
