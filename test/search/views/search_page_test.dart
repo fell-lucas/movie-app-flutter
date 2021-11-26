@@ -91,10 +91,20 @@ void main() {
     await tester.pump();
     expect(find.text(snackbarText), findsOneWidget);
   });
+
   testWidgets('loading indicator on SearchMovieLoadInProgress', (tester) async {
     when(() => searchMovieBloc.state).thenReturn(SearchMovieLoadInProgress());
     await tester.pumpWidget(createWidgetUnderTest());
     final loadIndicator = find.byKey(const Key('search_load_indicator'));
+    expect(loadIndicator, findsOneWidget);
+  });
+
+  testWidgets('error message on SearchMovieError', (tester) async {
+    const String error = 'error';
+    when(() => searchMovieBloc.state)
+        .thenReturn(SearchMovieError(error: error));
+    await tester.pumpWidget(createWidgetUnderTest());
+    final loadIndicator = find.byKey(const Key('search_error'));
     expect(loadIndicator, findsOneWidget);
   });
 }
