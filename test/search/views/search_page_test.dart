@@ -9,6 +9,8 @@ import 'package:movie_app_flutter/search/blocs/blocs.dart';
 import 'package:movie_app_flutter/search/views/search_page.dart';
 import 'package:movie_repository/movie_repository.dart';
 
+import '../../shared/shared.dart';
+
 class MockCreateMovieBloc extends MockBloc<CreateMovieEvent, CreateMovieState>
     implements CreateMovieBloc {}
 
@@ -26,18 +28,6 @@ class FakeCreateMovieEvent extends Fake implements CreateMovieEvent {}
 class FakeCreateMovieState extends Fake implements CreateMovieState {}
 
 void main() {
-  Movie generateMovie() {
-    final rand = Random();
-    var str = rand.nextInt(1000).toString();
-    return Movie(
-      description: str,
-      image: 'http://example.com',
-      imdbId: str,
-      title: str,
-      watched: rand.nextBool(),
-    );
-  }
-
   late CreateMovieBloc createMovieBloc;
   late SearchMovieBloc searchMovieBloc;
   late MovieRepository repository;
@@ -49,15 +39,17 @@ void main() {
 
   setUpAll(() {
     HttpOverrides.global = null;
-    repository = MockRepository();
     registerFallbackValue(createMovieDto);
     registerFallbackValue(FakeSearchMovieEvent());
     registerFallbackValue(FakeSearchMovieState());
     registerFallbackValue(FakeCreateMovieEvent());
     registerFallbackValue(FakeCreateMovieState());
+  });
+
+  setUp(() {
+    repository = MockRepository();
     createMovieBloc = CreateMovieBloc(movieRepository: repository);
     searchMovieBloc = MockSearchMovieBloc();
-    // when(() => createMovieBloc.state).thenReturn(CreateMovieInitial());
     when(() => searchMovieBloc.state).thenReturn(SearchMovieInitial());
   });
 
@@ -85,6 +77,17 @@ void main() {
     // Assert
     expect(find.text(snackbarText), findsNothing);
     createMovieBloc.emit(CreateMovieLoadSuccessful(movie: movieToAdd));
+    await tester.pump();
+    expect(find.text(snackbarText), findsOneWidget);
+  });
+  testWidgets('snackbar called on error', (tester) async {
+    // Arrange
+    const snackbarText = 'error';
+    // Act
+    await tester.pumpWidget(createWidgetUnderTest());
+    // Assert
+    expect(find.text(snackbarText), findsNothing);
+    createMovieBloc.emit(const CreateMovieError(error: snackbarText));
     await tester.pump();
     expect(find.text(snackbarText), findsOneWidget);
   });

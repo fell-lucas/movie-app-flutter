@@ -17,7 +17,6 @@ class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMovieState> {
 
   @override
   Stream<SearchMovieState> mapEventToState(SearchMovieEvent event) async* {
-    yield SearchMovieLoadInProgress();
     if (event is SearchMovies) {
       yield* _mapSearchMoviesToState(event);
     }
@@ -25,6 +24,7 @@ class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMovieState> {
 
   Stream<SearchMovieState> _mapSearchMoviesToState(SearchMovies event) async* {
     try {
+      yield SearchMovieLoadInProgress();
       List<Movie> movies = await movieRepository.searchMovies(fts: event.fts);
       yield SearchMovieLoadSuccessful(movies: movies);
     } on HttpException catch (e) {
