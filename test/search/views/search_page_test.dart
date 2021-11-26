@@ -28,7 +28,8 @@ class FakeCreateMovieEvent extends Fake implements CreateMovieEvent {}
 class FakeCreateMovieState extends Fake implements CreateMovieState {}
 
 void main() {
-  late CreateMovieBloc createMovieBloc;
+  late CreateMovieBloc realCreateMovieBloc;
+  late CreateMovieBloc mockedCreateMovieBloc;
   late SearchMovieBloc searchMovieBloc;
   late MovieRepository repository;
   Movie movieToAdd = generateMovie();
@@ -48,17 +49,20 @@ void main() {
 
   setUp(() {
     repository = MockRepository();
-    createMovieBloc = CreateMovieBloc(movieRepository: repository);
+    realCreateMovieBloc = CreateMovieBloc(movieRepository: repository);
+    mockedCreateMovieBloc = MockCreateMovieBloc();
     searchMovieBloc = MockSearchMovieBloc();
     when(() => searchMovieBloc.state).thenReturn(SearchMovieInitial());
+    when(() => mockedCreateMovieBloc.state).thenReturn(CreateMovieInitial());
   });
 
-  Widget createWidgetUnderTest() {
+  Widget createWidgetUnderTest({bool realCreateBloc = true}) {
     return (MaterialApp(
       home: Material(
         child: Scaffold(
           body: SearchPage(
-            createMovieBloc: createMovieBloc,
+            createMovieBloc:
+                realCreateBloc ? realCreateMovieBloc : mockedCreateMovieBloc,
             searchMovieBloc: searchMovieBloc,
           ),
         ),
@@ -76,7 +80,7 @@ void main() {
     await tester.pumpWidget(createWidgetUnderTest());
     // Assert
     expect(find.text(snackbarText), findsNothing);
-    createMovieBloc.emit(CreateMovieLoadSuccessful(movie: movieToAdd));
+    realCreateMovieBloc.emit(CreateMovieLoadSuccessful(movie: movieToAdd));
     await tester.pump();
     expect(find.text(snackbarText), findsOneWidget);
   });
@@ -87,7 +91,7 @@ void main() {
     await tester.pumpWidget(createWidgetUnderTest());
     // Assert
     expect(find.text(snackbarText), findsNothing);
-    createMovieBloc.emit(const CreateMovieError(error: snackbarText));
+    realCreateMovieBloc.emit(const CreateMovieError(error: snackbarText));
     await tester.pump();
     expect(find.text(snackbarText), findsOneWidget);
   });
@@ -105,6 +109,25 @@ void main() {
         .thenReturn(SearchMovieError(error: error));
     await tester.pumpWidget(createWidgetUnderTest());
     final loadIndicator = find.byKey(const Key('search_error'));
+    expect(loadIndicator, findsOneWidget);
+  });
+
+  testWidgets('loading indicator on CreateMovieLoadInProgress', (tester) async {
+    when(() => mockedCreateMovieBloc.state)
+        .thenReturn(CreateMovieLoadInProgress(
+      imdbId: movieToAdd.imdbId,
+    ));
+    when(() => searchMovieBloc.state).thenReturn(SearchMovieLoadSuccessful(
+      movies: [
+        movieToAdd,
+        generateMovie(),
+        generateMovie(),
+      ],
+    ));
+    await tester.pumpWidget(createWidgetUnderTest(realCreateBloc: false));
+    final loadIndicator = find.byKey(
+      Key('individual_loading_indicator_${movieToAdd.imdbId}'),
+    );
     expect(loadIndicator, findsOneWidget);
   });
 }

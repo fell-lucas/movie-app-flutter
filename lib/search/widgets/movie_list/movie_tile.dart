@@ -24,10 +24,11 @@ class MovieTile extends StatelessWidget {
           trailing: IconButton(
             icon: (state is CreateMovieLoadInProgress &&
                     state.imdbId == movie.imdbId)
-                ? const SizedBox(
+                ? SizedBox(
                     width: 15,
                     height: 15,
                     child: CircularProgressIndicator(
+                      key: Key('individual_loading_indicator_${movie.imdbId}'),
                       strokeWidth: 2,
                     ),
                   )
