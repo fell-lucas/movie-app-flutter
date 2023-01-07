@@ -13,3 +13,12 @@ Movie generateMovie() {
     watched: rand.nextBool(),
   );
 }
+
+CreateMovieDto generateCreateMovie() {
+  final rand = Random();
+  var str = rand.nextInt(1000).toString();
+  return CreateMovieDto(
+    imdbId: str,
+    watched: rand.nextBool(),
+  );
+}
